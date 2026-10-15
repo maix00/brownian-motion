@@ -171,9 +171,7 @@ lemma edist_chainingSequence_le_sum_edist {T : Type*} [PseudoEMetricSpace T] (f 
         edist (f (chainingSequence C x k (m + i))) (f (chainingSequence C x k (m + i + 1))) := by
   simp only [Nat.add_assoc, edist_comm (f x)]
   convert edist_le_range_sum_edist (fun i => f (chainingSequence C x k (m + i))) (k - m)
-  · rfl
-  · simp
-  · simp [(show m + (k - m) = k by lia)]
+  · simpa [show m + (k - m) = k by omega, chainingSequence_of_eq]
 
 lemma edist_chainingSequence_le_sum_edist' {T : Type*} [PseudoEMetricSpace T] (f : E → T)
     {m : ℕ} (hm : m ≤ k) :
@@ -256,7 +254,7 @@ lemma scale_change {F : Type*} [PseudoEMetricSpace F] (m : ℕ) (X : E → F) (�
   · gcongr with s t
     exact le_trans (edist_triangle _ (X (c t)) _) (by gcongr; apply edist_triangle)
   · simp only [ENNReal.add_iSup, add_assoc]
-  · exact iSup_le (fun s => by gcongr <;> exact le_iSup (α := ENNReal) _ _)
+  · exact iSup_le (fun s => by gcongr <;> exact le_iSup_of_le s le_rfl)
   · congr 1
     conv_lhs => congr; ext s; rw [iSup_subtype]
     rw [iSup_comm]
@@ -264,7 +262,7 @@ lemma scale_change {F : Type*} [PseudoEMetricSpace F] (m : ℕ) (X : E → F) (�
     conv_lhs => congr; ext s; rw [iSup_subtype']
   · simp only [ENNReal.iSup_add]
   · rw [add_assoc]
-    exact add_le_add_right (iSup_le (fun s => by gcongr <;> exact le_iSup (α := ENNReal) _ _)) _
+    exact add_le_add_right (iSup_le (fun s => by gcongr <;> exact le_iSup_of_le s le_rfl)) _
   · conv_lhs => right; congr; ext s; rw [edist_comm]
     conv_rhs => left; congr; ext s; congr; ext t; rw [edist_comm]
     ring

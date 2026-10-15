@@ -336,7 +336,8 @@ lemma holderOnWith_of_mem_holderSet (hT : HasBoundedCoveringNumber U c d)
     HolderOnWith (C ω ^ p⁻¹).toNNReal β (fun (t : T') ↦ X t ω) {t' | (t' : T) ∈ U} := by
   intro s hs t ht
   have h_edist_lt_top : edist s t < ∞ := by
-    calc edist s t ≤ Metric.ediam U := Metric.edist_le_ediam_of_mem hs ht
+    calc edist s t = edist (s : T) (t : T) := rfl
+    _ ≤ Metric.ediam U := Metric.edist_le_ediam_of_mem hs ht
     _ < ∞ := hT.ediam_lt_top
   have h_dist_top : edist s t ^ (β : ℝ) ≠ ∞ := by
     simp only [ne_eq, ENNReal.rpow_eq_top_iff, NNReal.coe_pos, not_or, not_and, not_lt,
